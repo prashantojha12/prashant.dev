@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prashant Ojha | Code Architect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff9d;
+            --secondary: #00b8ff;
+            --accent: #6c5ce7;
+            --dark: #0a0e1a;
+            --darker: #05080f;
+            --light: #e2e8f0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 255, 157, 0.1);
+        }
+
+        body {
+            font-family: 'Courier New', 'Fira Code', monospace;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* एनिमेटेड कोड बैकग्राउंड */
+        .code-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.15;
+        }
+
+        .code-line {
+            position: absolute;
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: nowrap;
+            animation: slideCode 20s linear infinite;
+            text-shadow: 0 0 5px var(--primary);
+        }
+
+        @keyframes slideCode {
+            from {
+                transform: translateY(100vh) translateX(-100%);
+            }
+
+            to {
+                transform: translateY(-100vh) translateX(100%);
+            }
+        }
+
+        /* ग्लासमॉर्फिज्म कार्ड */
+        .glass-card {
+            background: rgba(10, 14, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* नेविगेशन */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(5, 8, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '<';
+            color: var(--primary);
+            opacity: 0;
+            margin-right: 5px;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '/>';
+            color: var(--primary);
+            opacity: 0;
+            margin-left: 5px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a:hover::after {
+            opacity: 1;
+        }
+
+        /* मोबाइल मेन्यू */
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-btn span {
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            left: 20px;
+            background: rgba(5, 8, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 2rem;
+            display: none;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mobile-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .mobile-links a:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        /* हीरो सेक्शन - टर्मिनल स्टाइल */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .terminal {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 1px solid var(--primary);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.2);
+        }
+
+        .terminal-header {
+            background: #1a1e2a;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .terminal-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ff5f56;
+        }
+
+        .yellow {
+            background: #ffbd2e;
+        }
+
+        .green {
+            background: #27c93f;
+        }
+
+        .terminal-body {
+            padding: 30px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .terminal-line {
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInLine 0.5s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .terminal-line:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .terminal-line:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .terminal-line:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        .terminal-line:nth-child(5) {
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeInLine {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prompt {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .command {
+            color: var(--light);
+        }
+
+        .output {
+            color: #6c7983;
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* स्किल्स सेक्शन */
+        .skills-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::before {
+            content: '/*';
+            color: var(--primary);
+            margin-right: 10px;
+            opacity: 0.5;
+        }
+
+        .section-title::after {
+            content: '*/';
+            color: var(--primary);
+            margin-left: 10px;
+            opacity: 0.5;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .skill-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .skill-card:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateZ(20px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .skill-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .skill-level {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-level::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--level);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+            animation: fillBar 1.5s ease;
+        }
+
+        @keyframes fillBar {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: var(--level);
+            }
+        }
+
+        /* एक्सपीरियंस कार्ड */
+        .exp-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .exp-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exp-card::before {
+            content: '<?php';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-weight: bold;
+        }
+
+        .exp-company {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .exp-period {
+            color: #6c7983;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .exp-desc {
+            list-style: none;
+        }
+
+        .exp-desc li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .exp-desc li::before {
+            content: '>';
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* प्रोजेक्ट्स ग्रिड */
+        .projects-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .project-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::after {
+            content: '</>';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-weight: bold;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.2);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .project-desc {
+            color: #6c7983;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tech-tag {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+
+        /* एजुकेशन सेक्शन */
+        .edu-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .edu-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .edu-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .edu-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .edu-degree {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .edu-status {
+            color: var(--primary);
+        }
+
+        /* फूटर */
+        footer {
+            background: var(--darker);
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 157, 0.3);
+        }
+
+        .copyright {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        /* रिस्पॉन्सिव */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .terminal-body {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .exp-company {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Contact Section - FULLY FIXED */
+        .contact-section {
+            padding: 60px 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+            margin: 40px 0 25px;
+            width: 100%;
+        }
+
+        /* Contact Cards - बिल्कुल सही */
+        .contact-info,
+        .contact-form {
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            height: fit-content;
+            box-sizing: border-box;
+        }
+
+        .contact-heading {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--light);
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Info Items - FIXED */
+        .info-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .info-item:hover {
+            background: rgba(0, 255, 157, 0.05);
+            transform: translateX(5px);
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: rgba(0, 255, 157, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .info-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .info-content h4 {
+            color: var(--light);
+            margin-bottom: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .info-content p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .info-sub {
+            font-size: 0.85rem !important;
+            color: #64748b !important;
+            margin-top: 2px !important;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 1.1rem;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* FORM FIXED - अब text properly show होगा */
+        .contact-form-element {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: #ffffff !important;
+            /* Text white */
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        /* जब लिख रहे हो तब भी text दिखे */
+        .form-group input:not(:placeholder-shown),
+        .form-group textarea:not(:placeholder-shown) {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(0, 255, 157, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.1);
+        }
+
+        /* Label FIXED - अब properly overlap नहीं करेगा */
+        .form-group label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #0a0e1a, #05080f);
+            padding: 0 6px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            transition: 0.2s ease-out;
+            pointer-events: none;
+            border-radius: 4px;
+            line-height: 1;
+        }
+
+        .form-group textarea~label {
+            top: 18px;
+            transform: none;
+        }
+
+        /* जब फोकस हो या कुछ लिखा हो - label ऊपर चला जाए */
+        .form-group input:focus~label,
+        .form-group textarea:focus~label,
+        .form-group input:not(:placeholder-shown)~label,
+        .form-group textarea:not(:placeholder-shown)~label {
+            top: -8px;
+            transform: translateY(0) scale(0.85);
+            color: var(--primary);
+            background: linear-gradient(135deg, #0a0e1a, #0a0e1a);
+            padding: 0 8px;
+        }
+
+        /* Textarea के लिए खास */
+        .form-group textarea:focus~label,
+        .form-group textarea:not(:placeholder-shown)~label {
+            top: -10px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            color: #000000;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 157, 0.3);
+        }
+
+        /* Contact Footer */
+        .contact-footer {
+            padding: 18px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .quick-reply {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .quick-reply i {
+            font-size: 1rem;
+        }
+
+        /* Form Status */
+        .form-status {
+            margin-top: 15px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 20px 15px;
+            }
+
+            .info-item {
+                padding: 10px;
+            }
+
+            .contact-footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .quick-reply {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* बहुत छोटी screen के लिए */
+        @media (max-width: 480px) {
+            .info-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .info-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- एनिमेटेड कोड बैकग्राउंड -->
+    <div class="code-background" id="codeBackground"></div>
+
+    <!-- नेविगेशन -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Prashant.dev</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- मोबाइल मेन्यू -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-links">
+            <a href="#home">_home</a>
+            <a href="#skills">_skills</a>
+            <a href="#experience">_experience</a>
+            <a href="#projects">_projects</a>
+            <a href="#contact">_contact</a>
+        </div>
+    </div>
+
+    <!-- हीरो सेक्शन - टर्मिनल स्टाइल -->
+    <section id="home" class="hero">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-circle red"></div>
+                <div class="terminal-circle yellow"></div>
+                <div class="terminal-circle green"></div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">whoami</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">> Prashant Ojha</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">cat role.txt</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">> Full Stack Web Developer</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">echo $experience</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output">> 2+ Years @ Zanthium Technosoft</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command">./current_status<span class="cursor-blink">_</span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- स्किल्स सेक्शन -->
+    <section id="skills" class="skills-section">
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-php"></i></div>
+                <div class="skill-name">PHP</div>
+                <div class="skill-level" style="--level: 95%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-database"></i></div>
+                <div class="skill-name">MySQL</div>
+                <div class="skill-level" style="--level: 90%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-js"></i></div>
+                <div class="skill-name">JavaScript</div>
+                <div class="skill-level" style="--level: 85%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                <div class="skill-name">HTML5</div>
+                <div class="skill-level" style="--level: 95%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
+                <div class="skill-name">CSS3</div>
+                <div class="skill-level" style="--level: 90%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-bootstrap"></i></div>
+                <div class="skill-name">Bootstrap</div>
+                <div class="skill-level" style="--level: 88%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-code"></i></div>
+                <div class="skill-name">jQuery</div>
+                <div class="skill-level" style="--level: 85%"></div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-project-diagram"></i></div>
+                <div class="skill-name">MLM Systems</div>
+                <div class="skill-level" style="--level: 92%"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- एक्सपीरियंस सेक्शन -->
+    <section id="experience" class="exp-section">
+        <h2 class="section-title">Work Experience</h2>
+        <div class="exp-card glass-card">
+            <h3 class="exp-company">Zanthium Technosoft Pvt. Ltd.</h3>
+            <div class="exp-period">2022 - Present (2+ Years)</div>
+            <ul class="exp-desc">
+                <li>Developing and maintaining MLM software with complex commission structures</li>
+                <li>Creating management systems for various business domains</li>
+                <li>Working with PHP, MySQL, and modern frontend technologies</li>
+                <li><span style="color: #00ff9d;">✓ Integrating various third-party APIs including Payment Gateways
+                        (Razorpay, Paytm, Stripe)</span></li>
+                <li><span style="color: #00ff9d;">✓ Building and consuming RESTful APIs for seamless data
+                        communication</span></li>
+                <li>Optimizing database queries for high-performance applications</li>
+                <li><span style="color: #00ff9d;">✓ Implementing API security, authentication (JWT, OAuth) and request
+                        validation</span></li>
+                <li>Collaborating with cross-functional teams for software architecture</li>
+                <li><span style="color: #00ff9d;">✓ Working with SMS, Email, and WhatsApp Business APIs for notification
+                        systems</span></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- एजुकेशन सेक्शन -->
+    <section class="edu-section">
+        <h2 class="section-title">Education</h2>
+        <div class="edu-grid">
+            <div class="edu-item glass-card">
+                <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="edu-degree">Master of Computer Applications</div>
+                <div class="edu-status">Currently Pursuing</div>
+            </div>
+            <div class="edu-item glass-card">
+                <div class="edu-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="edu-degree">Bachelor of Computer Applications</div>
+                <div class="edu-status">Completed</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- प्रोजेक्ट्स सेक्शन -->
+    <section id="projects" class="projects-section">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <!-- पहला कार्ड - MLM Software (वैसा ही) -->
+            <div class="project-card glass-card">
+                <h3 class="project-title">MLM Software Suite</h3>
+                <p class="project-desc">Complete multi-level marketing platform with genealogy tree, commission
+                    calculation, and payout management system.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">jQuery</span>
+                    <span class="tech-tag">AJAX</span>
+                </div>
+            </div>
+
+            <!-- दूसरा कार्ड - Business Management (अब सभी बिजनेस के लिए) -->
+            <div class="project-card glass-card">
+                <h3 class="project-title">Business Management System</h3>
+                <p class="project-desc">Complete management solution for all business types including Schools, Colleges,
+                    Hospitals, Retail Shops, Hotels, and Manufacturing units. Features billing, inventory, HR, and
+                    accounting modules.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">jQuery</span>
+                    <span class="tech-tag">AJAX</span>
+                    <span class="tech-tag">REST API</span>
+                </div>
+            </div>
+
+            <!-- तीसरा कार्ड - ERP (वैसा ही) -->
+            <div class="project-card glass-card">
+                <h3 class="project-title">ERP for Businesses</h3>
+                <p class="project-desc">Enterprise resource planning system with inventory, billing, HR, and client
+                    management modules.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">jQuery</span>
+                    <span class="tech-tag">AJAX</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section - COMPLETELY FIXED -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Let's Connect</h2>
+
+        <div class="contact-container">
+            <!-- बाईं तरफ - Contact Info (अब बिलकुल सही) -->
+            <div class="contact-info glass-card">
+                <h3 class="contact-heading">
+                    <span style="color: var(--primary);">&lt;</span>
+                    Get In Touch
+                    <span style="color: var(--primary);">/&gt;</span>
+                </h3>
+
+                <div class="info-items">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email</h4>
+                            <p>prashant73670@gmail.com</p>
+                            <!-- <p class="info-sub">work.prashant@email.com</p> -->
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Phone</h4>
+                            <p>+91 7367024765</p>
+                            <!-- <p class="info-sub">+91 12345 67890</p> -->
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Location</h4>
+                            <p>Kashipur, Uttarkhand</p>
+                            <p class="info-sub">India - 244713</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Available For</h4>
+                            <p>Full Time • Freelance • Remote</p>
+                            <p class="info-sub">Immediate Joining</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-icon" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- दाईं तरफ - Contact Form (बिल्कुल सही किया) -->
+            <div class="contact-form glass-card">
+                <h3 class="contact-heading">
+                    <span style="color: var(--primary);">//</span>
+                    Send Message
+                    <span style="color: var(--primary);">//</span>
+                </h3>
+
+                <form id="contactForm" class="contact-form-element">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder=" " autocomplete="off">
+                        <label for="name">Your Name</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder=" " autocomplete="off">
+                        <label for="email">Email Address</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder=" " autocomplete="off">
+                        <label for="subject">Subject</label>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="message" rows="5" placeholder=" "></textarea>
+                        <label for="message">Your Message</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <div class="form-status" id="formStatus"></div>
+            </div>
+        </div>
+
+        <!-- नीचे वाला फुटर -->
+        <div class="contact-footer glass-card">
+            <div class="quick-reply">
+                <i class="fas fa-bolt" style="color: var(--primary);"></i>
+                <span>Quick Reply within 24 hours</span>
+            </div>
+            <div class="quick-reply">
+                <i class="fas fa-shield-alt" style="color: var(--primary);"></i>
+                <span>End-to-end Encrypted</span>
+            </div>
+            <div class="quick-reply">
+                <i class="fas fa-code" style="color: var(--primary);"></i>
+                <span>Let's Build Something Amazing</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- फूटर / कॉन्टैक्ट -->
+    <footer id="contact">
+        <div class="footer-content">
+            <h2 class="section-title" style="margin-bottom: 30px;">Connect With Me</h2>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="copyright">
+                <p>&lt;?php echo "© 2026 Prashant Ojha • Full Stack Developer"; ?&gt;</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">[ Built with ❤️ and lots of code ]</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // कोड बैकग्राउंड जनरेट करें
+        const codeBackground = document.getElementById('codeBackground');
+        const codeSnippets = [
+            'function hello() { return "World"; }',
+            '<?php echo "Developer"; ?>',
+            'const skills = ["PHP", "MySQL", "JS"];',
+            'class Developer { ... }',
+            'mysql_connect("localhost", "root", "");',
+            'if($code === "awesome") { echo "Prashant"; }',
+            'for($i=0; $i<10; $i++) { code(); }',
+            '$experience = "2+ Years";',
+            'public function buildMLM()',
+            'new Framework();',
+            'git commit -m "awesome code"',
+            'npm run dev',
+            'docker-compose up',
+            '<?xml version="1.0"?>',
+            'SELECT * FROM skills;',
+            'INSERT INTO projects VALUES ("MLM");',
+            '<div class="developer"></div>',
+            'background: linear-gradient();',
+            'use Illuminate\\Http\\Request;',
+            'python manage.py runserver'
+        ];
+
+        for (let i = 0; i < 30; i++) {
+            const line = document.createElement('div');
+            line.className = 'code-line';
+            line.style.left = Math.random() * 100 + '%';
+            line.style.animationDuration = (15 + Math.random() * 20) + 's';
+            line.style.animationDelay = Math.random() * 10 + 's';
+            line.style.opacity = 0.1 + Math.random() * 0.2;
+            line.style.fontSize = (12 + Math.random() * 8) + 'px';
+            line.textContent = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            codeBackground.appendChild(line);
+        }
+
+        // मोबाइल मेन्यू टॉगल
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const body = document.body;
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+
+            // एनीमेशन के लिए बटन
+            const spans = menuBtn.querySelectorAll('span');
+            if (mobileMenu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(8px, -8px)';
+                body.style.overflow = 'hidden';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+                body.style.overflow = 'auto';
+            }
+        });
+
+        // मेन्यू लिंक पर क्लिक करने पर बंद करें
+        document.querySelectorAll('.mobile-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                const spans = menuBtn.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+                body.style.overflow = 'auto';
+            });
+        });
+
+        // स्क्रॉल एनिमेशन
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section, .project-card, .skill-card, .edu-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // स्मूथ स्क्रॉल
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+
+
+
+
+        // Form Submit Handler
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+
+            // Loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+
+            // यहाँ आप अपना AJAX call कर सकते हैं
+            // Example: fetch('/send-message', { method: 'POST', body: new FormData(this) })
+
+            // Demo response (2 seconds later)
+            setTimeout(() => {
+                formStatus.innerHTML = `
+            <div style="color: var(--primary); background: rgba(0,255,157,0.1); padding: 10px; border-radius: 8px;">
+                <i class="fas fa-check-circle"></i> Message sent successfully! I'll reply within 24 hours.
+            </div>
+        `;
+
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                contactForm.reset();
+
+                // Clear status after 5 seconds
+                setTimeout(() => {
+                    formStatus.innerHTML = '';
+                }, 5000);
+            }, 2000);
+        });
+    </script>
+
+
+
+
+
+    <script>
+        // ============================================
+        // 🌟 PRASHANT OJHA - INTERACTIVE CONSOLE PORTFOLIO
+        // ============================================
+        // कंसोल में देखने के लिए F12 दबाएं और टाइप करें: ojha.help()
+        // ============================================
+
+        (function () {
+            // कंसोल स्टाइलिंग
+            const styles = {
+                title: 'font-size: 20px; font-weight: bold; color: #00ff9d; font-family: monospace;',
+                header: 'font-size: 16px; font-weight: bold; color: #00b8ff; font-family: monospace;',
+                text: 'font-size: 14px; color: #e2e8f0; font-family: monospace;',
+                success: 'color: #00ff9d; font-weight: bold;',
+                highlight: 'background: #00ff9d; color: #000; padding: 2px 5px; border-radius: 3px;',
+                error: 'color: #ff5f56;',
+                warning: 'color: #ffbd2e;'
+            };
+
+            // पोर्टफोलियो ऑब्जेक्ट - अब नाम ojha हो गया
+            window.ojha = {
+                // बेसिक इन्फो
+                name: 'Prashant Ojha',
+                role: 'Full Stack Web Developer',
+                experience: '2+ Years @ Zanthium Technosoft Pvt. Ltd.',
+                education: {
+                    mca: 'MCA (Currently Pursuing)',
+                    bca: 'BCA (Completed)'
+                },
+
+                // स्किल्स
+                skills: {
+                    backend: ['PHP (95%)', 'MySQL (90%)', 'REST APIs', 'Payment Gateways'],
+                    frontend: ['JavaScript (85%)', 'jQuery', 'Bootstrap', 'HTML5/CSS3'],
+                    other: ['MLM Systems', 'ERP Solutions', 'API Security', 'JWT/OAuth']
+                },
+
+                // प्रोजेक्ट्स
+                projects: [
+                    {
+                        name: 'MLM Software Suite',
+                        desc: 'Multi-level marketing platform with genealogy tree',
+                        tech: ['PHP', 'MySQL', 'jQuery']
+                    },
+                    {
+                        name: 'Business Management System',
+                        desc: 'Complete solution for Schools, Colleges, Hospitals',
+                        tech: ['PHP', 'MySQL', 'Bootstrap', 'AJAX']
+                    },
+                    {
+                        name: 'ERP for Businesses',
+                        desc: 'Inventory, billing, HR management system',
+                        tech: ['PHP', 'MySQL', 'jQuery']
+                    }
+                ],
+
+                // कॉन्टैक्ट
+                contact: {
+                    email: 'prashant.ojha@developer.com',
+                    phone: '+91 98765 43210',
+                    location: 'Lucknow, UP',
+                    available: 'Full Time • Freelance • Remote'
+                },
+
+                // ============ मेन फंक्शन ============
+
+                // पूरा पोर्टफोलियो दिखाएं
+                show: function () {
+                    console.clear();
+                    console.log('%c╔══════════════════════════════════════╗', styles.title);
+                    console.log('%c║     PRASHANT OJHA - PORTFOLIO        ║', styles.title);
+                    console.log('%c╚══════════════════════════════════════╝\n', styles.title);
+
+                    console.log('%c📋 BASICS:', styles.header);
+                    console.log(`%c  Name: ${this.name}`, styles.text);
+                    console.log(`%c  Role: ${this.role}`, styles.text);
+                    console.log(`%c  Experience: ${this.experience}\n`, styles.text);
+
+                    console.log('%c🎓 EDUCATION:', styles.header);
+                    console.log(`%c  • ${this.education.mca}`, styles.text);
+                    console.log(`%c  • ${this.education.bca}\n`, styles.text);
+
+                    console.log('%c💻 TECH SKILLS:', styles.header);
+                    console.log('%c  Backend:', styles.highlight);
+                    this.skills.backend.forEach(s => console.log(`%c    • ${s}`, styles.text));
+                    console.log('%c  Frontend:', styles.highlight);
+                    this.skills.frontend.forEach(s => console.log(`%c    • ${s}`, styles.text));
+                    console.log('%c  Other:', styles.highlight);
+                    this.skills.other.forEach(s => console.log(`%c    • ${s}\n`, styles.text));
+
+                    console.log('%c🚀 PROJECTS:', styles.header);
+                    this.projects.forEach(p => {
+                        console.log(`%c  📌 ${p.name}`, styles.success);
+                        console.log(`%c     ${p.desc}`, styles.text);
+                        console.log(`%c     Tech: ${p.tech.join(' • ')}\n`, styles.warning);
+                    });
+
+                    console.log('%c📞 CONTACT:', styles.header);
+                    console.log(`%c  Email: ${this.contact.email}`, styles.text);
+                    console.log(`%c  Phone: ${this.contact.phone}`, styles.text);
+                    console.log(`%c  Location: ${this.contact.location}`, styles.text);
+                    console.log(`%c  Available: ${this.contact.available}\n`, styles.success);
+
+                    console.log('%c💡 TIPS: ojha.help() for all commands', styles.warning);
+                },
+
+                // सिर्फ बेसिक इन्फो
+                info: function () {
+                    console.clear();
+                    console.log('%c👤 PRASHANT OJHA', styles.title);
+                    console.log(`%c${this.role}`, styles.text);
+                    console.log(`%c${this.experience}\n`, styles.text);
+                    console.log(`%c📧 ${this.contact.email}`, styles.text);
+                    console.log(`%c📞 ${this.contact.phone}`, styles.text);
+                },
+
+                // सिर्फ स्किल्स
+                skills: function () {
+                    console.clear();
+                    console.log('%c🔧 TECHNICAL SKILLS', styles.title);
+                    console.log('%c===================\n', styles.text);
+
+                    console.group('%cBackend Skills', styles.header);
+                    this.skills.backend.forEach(s => console.log(`%c  • ${s}`, styles.text));
+                    console.groupEnd();
+
+                    console.group('%cFrontend Skills', styles.header);
+                    this.skills.frontend.forEach(s => console.log(`%c  • ${s}`, styles.text));
+                    console.groupEnd();
+
+                    console.group('%cOther Skills', styles.header);
+                    this.skills.other.forEach(s => console.log(`%c  • ${s}`, styles.text));
+                    console.groupEnd();
+                },
+
+                // सिर्फ प्रोजेक्ट्स
+                projects: function () {
+                    console.clear();
+                    console.log('%c📦 FEATURED PROJECTS', styles.title);
+                    console.log('%c===================\n', styles.text);
+
+                    this.projects.forEach((p, i) => {
+                        console.log(`%c${i + 1}. ${p.name}`, styles.success);
+                        console.log(`%c   ${p.desc}`, styles.text);
+                        console.log(`%c   🛠️ ${p.tech.join(' • ')}\n`, styles.warning);
+                    });
+                },
+
+                // सिर्फ कॉन्टैक्ट
+                contact: function () {
+                    console.clear();
+                    console.log('%c📬 CONTACT INFORMATION', styles.title);
+                    console.log('%c====================\n', styles.text);
+
+                    console.log(`%c📧 Email:`, styles.header);
+                    console.log(`%c   ${this.contact.email}`, styles.text);
+                    console.log(`%c   work.prashant@email.com\n`, styles.text);
+
+                    console.log(`%c📞 Phone:`, styles.header);
+                    console.log(`%c   ${this.contact.phone}`, styles.text);
+                    console.log(`%c   +91 12345 67890\n`, styles.text);
+
+                    console.log(`%c📍 Location:`, styles.header);
+                    console.log(`%c   ${this.contact.location}, India - 226001\n`, styles.text);
+
+                    console.log(`%c⚡ Available: ${this.contact.available}`, styles.success);
+                },
+
+                // सारे कमांड्स की लिस्ट
+                help: function () {
+                    console.clear();
+                    console.log('%c📚 AVAILABLE COMMANDS', styles.title);
+                    console.log('%c====================\n', styles.text);
+
+                    const commands = [
+                        { cmd: 'ojha.show()', desc: 'पूरा पोर्टफोलियो दिखाएं' },
+                        { cmd: 'ojha.info()', desc: 'बेसिक जानकारी' },
+                        { cmd: 'ojha.skills()', desc: 'सिर्फ स्किल्स' },
+                        { cmd: 'ojha.projects()', desc: 'प्रोजेक्ट्स की लिस्ट' },
+                        { cmd: 'ojha.contact()', desc: 'कॉन्टैक्ट डिटेल्स' },
+                        { cmd: 'ojha.social()', desc: 'सोशल मीडिया लिंक्स' },
+                        { cmd: 'ojha.matrix()', desc: 'मैट्रिक्स इफेक्ट' },
+                        { cmd: 'ojha.clear()', desc: 'कंसोल साफ करें' },
+                        { cmd: 'ojha.help()', desc: 'यह हेल्प मेनू' }
+                    ];
+
+                    commands.forEach(c => {
+                        console.log(`%c${c.cmd}`, styles.success);
+                        console.log(`%c  → ${c.desc}\n`, styles.text);
+                    });
+
+                    console.log('%c💡 टिप: सारे कमांड्स के साथ ट्राई करें!', styles.warning);
+                },
+
+                // सोशल मीडिया
+                social: function () {
+                    console.clear();
+                    console.log('%c🌐 SOCIAL MEDIA', styles.title);
+                    console.log('%c==============\n', styles.text);
+
+                    console.log(`%c🐙 GitHub:   github.com/prashant-ojha`, styles.text);
+                    console.log(`%c🔗 LinkedIn: linkedin.com/in/prashant-ojha`, styles.text);
+                    console.log(`%c🐦 Twitter:  @prashant_ojha`, styles.text);
+                    console.log(`%c📸 Instagram: @prashant.ojha.dev`, styles.text);
+                },
+
+                // मैट्रिक्स इफेक्ट
+                matrix: function () {
+                    console.clear();
+                    console.log('%c🎬 MATRIX MODE ACTIVATED', styles.title);
+                    console.log('%c=======================\n', styles.text);
+
+                    for (let i = 0; i < 10; i++) {
+                        let line = '';
+                        for (let j = 0; j < 30; j++) {
+                            line += Math.random() > 0.5 ? '1' : '0';
+                        }
+                        console.log(`%c${line}`, 'color: #00ff9d; opacity: 0.7;');
+                    }
+
+                    console.log('\n%cWake up, Neo...', styles.success);
+                    setTimeout(() => {
+                        console.log('%cYou are the one. Prashant Ojha.', styles.highlight);
+                    }, 1000);
+                },
+
+                // कंसोल साफ करें
+                clear: function () {
+                    console.clear();
+                    console.log('%c✨ Console Cleared! Type ojha.help() for commands', styles.success);
+                },
+
+                // रिज्यूमे डाउनलोड
+                resume: function () {
+                    console.log('%c📄 Resume: https://prashant-ojha.dev/resume.pdf', styles.text);
+                    console.log('%c⚠️ Click the link to download', styles.warning);
+                }
+            };
+
+            // ============ वेलकम मैसेज ============
+            console.log('%c╔════════════════════════════════════════════╗', styles.title);
+            console.log('%c║     🔥 PRASHANT OJHA - DEV PORTFOLIO      ║', styles.title);
+            console.log('%c╚════════════════════════════════════════════╝\n', styles.title);
+
+            console.log('%c🚀 Full Stack Developer | PHP | MySQL | APIs', styles.header);
+            console.log('%c📅 2+ Years @ Zanthium Technosoft\n', styles.text);
+
+            console.log('%c⚡ कंसोल में टाइप करें:', styles.warning);
+            console.log('%c   ojha.help()  - सारे कमांड्स देखें', styles.success);
+            console.log('%c   ojha.show()  - पूरा पोर्टफोलियो देखें\n', styles.success);
+
+            console.log('%c💡 PRO TIP: ojha.matrix() भी ट्राई करें!', styles.highlight);
+
+        })();
+    </script>
+</body>
+
+</html>
