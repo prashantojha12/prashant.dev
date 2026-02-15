@@ -1378,7 +1378,7 @@
             codeBackground.appendChild(line);
         }
 
-        // मोबाइल मेन्यू टॉगल
+        // मोबाइल मेन्यू टॉगल 
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         const body = document.body;
@@ -1505,7 +1505,7 @@
                 warning: 'color: #ffbd2e;'
             };
 
-            // पोर्टफोलियो ऑब्जेक्ट - अब नाम ojha हो गया
+            // पोर्टफोलियो ऑब्जेक्ट - COMPLETELY FIXED
             window.ojha = {
                 // बेसिक इन्फो
                 name: 'Prashant Ojha',
@@ -1542,11 +1542,13 @@
                     }
                 ],
 
-                // कॉन्टैक्ट
+                // कॉन्टैक्ट डिटेल्स - SIMPLE AND CLEAN
                 contact: {
-                    email: 'prashant.ojha@developer.com',
-                    phone: '+91 98765 43210',
-                    location: 'Lucknow, UP',
+                    email: 'prashant73670@gmail.com',
+                    phone: '+91 7367024765',
+                    city: 'Kashipur',
+                    state: 'Uttarakhand',
+                    pincode: '244713',
                     available: 'Full Time • Freelance • Remote'
                 },
 
@@ -1586,27 +1588,30 @@
                     console.log('%c📞 CONTACT:', styles.header);
                     console.log(`%c  Email: ${this.contact.email}`, styles.text);
                     console.log(`%c  Phone: ${this.contact.phone}`, styles.text);
-                    console.log(`%c  Location: ${this.contact.location}`, styles.text);
+                    console.log(`%c  Location: ${this.contact.city}, ${this.contact.state} - ${this.contact.pincode}`, styles.text);
                     console.log(`%c  Available: ${this.contact.available}\n`, styles.success);
 
                     console.log('%c💡 TIPS: ojha.help() for all commands', styles.warning);
                 },
 
                 // सिर्फ बेसिक इन्फो
+                // सिर्फ बेसिक इन्फो - FIXED
+                // सिर्फ बेसिक इन्फो - DIRECT VALUES (कोई undefined नहीं)
                 info: function () {
                     console.clear();
                     console.log('%c👤 PRASHANT OJHA', styles.title);
-                    console.log(`%c${this.role}`, styles.text);
-                    console.log(`%c${this.experience}\n`, styles.text);
-                    console.log(`%c📧 ${this.contact.email}`, styles.text);
-                    console.log(`%c📞 ${this.contact.phone}`, styles.text);
+                    console.log(`%cFull Stack Web Developer`, styles.text);
+                    console.log(`%c2+ Years @ Zanthium Technosoft\n`, styles.text);
+                    console.log(`%c📧 prashant73670@gmail.com`, styles.text);
+                    console.log(`%c📞 +91 7367024765`, styles.text);
+                    console.log(`%c📍 Kashipur, Uttarakhand`, styles.text);
                 },
 
                 // सिर्फ स्किल्स
                 skills: function () {
                     console.clear();
                     console.log('%c🔧 TECHNICAL SKILLS', styles.title);
-                    console.log('%c===================\n', styles.text);
+                    console.log('%c========================\n', styles.text);
 
                     console.group('%cBackend Skills', styles.header);
                     this.skills.backend.forEach(s => console.log(`%c  • ${s}`, styles.text));
@@ -1622,36 +1627,67 @@
                 },
 
                 // सिर्फ प्रोजेक्ट्स
+                // projects: function () {
+                //     console.clear();
+                //     console.log('%c📦 FEATURED PROJECTS', styles.title);
+                //     console.log('%c===================\n', styles.text);
+
+                //     this.projects.forEach((p, i) => {
+                //         console.log(`%c${i + 1}. ${p.name}`, styles.success);
+                //         console.log(`%c   ${p.desc}`, styles.text);
+                //         console.log(`%c   🛠️ ${p.tech.join(' • ')}\n`, styles.warning);
+                //     });
+                // },
+
+                // सिर्फ प्रोजेक्ट्स - COMPLETELY FIXED
                 projects: function () {
                     console.clear();
                     console.log('%c📦 FEATURED PROJECTS', styles.title);
-                    console.log('%c===================\n', styles.text);
+                    console.log('%c=========================\n', styles.text);
 
-                    this.projects.forEach((p, i) => {
+                    // DIRECT PROJECTS ARRAY - कोई error नहीं
+                    const projectList = [
+                        {
+                            name: 'MLM Software Suite',
+                            desc: 'Multi-level marketing platform with genealogy tree',
+                            tech: ['PHP', 'MySQL', 'jQuery']
+                        },
+                        {
+                            name: 'Business Management System',
+                            desc: 'Complete solution for Schools, Colleges, Hospitals',
+                            tech: ['PHP', 'MySQL', 'Bootstrap', 'AJAX']
+                        },
+                        {
+                            name: 'ERP for Businesses',
+                            desc: 'Inventory, billing, HR management system',
+                            tech: ['PHP', 'MySQL', 'jQuery']
+                        }
+                    ];
+
+                    projectList.forEach((p, i) => {
                         console.log(`%c${i + 1}. ${p.name}`, styles.success);
                         console.log(`%c   ${p.desc}`, styles.text);
                         console.log(`%c   🛠️ ${p.tech.join(' • ')}\n`, styles.warning);
                     });
                 },
 
-                // सिर्फ कॉन्टैक्ट
+                // सिर्फ कॉन्टैक्ट - FINAL FIXED VERSION
                 contact: function () {
                     console.clear();
                     console.log('%c📬 CONTACT INFORMATION', styles.title);
-                    console.log('%c====================\n', styles.text);
+                    console.log('%c=================================\n', styles.text);
 
+                    // DIRECT VALUES - कोई undefined नहीं
                     console.log(`%c📧 Email:`, styles.header);
-                    console.log(`%c   ${this.contact.email}`, styles.text);
-                    console.log(`%c   work.prashant@email.com\n`, styles.text);
+                    console.log(`%c   prashant73670@gmail.com`, styles.text);
 
                     console.log(`%c📞 Phone:`, styles.header);
-                    console.log(`%c   ${this.contact.phone}`, styles.text);
-                    console.log(`%c   +91 12345 67890\n`, styles.text);
+                    console.log(`%c   +91 7367024765\n`, styles.text);
 
                     console.log(`%c📍 Location:`, styles.header);
-                    console.log(`%c   ${this.contact.location}, India - 226001\n`, styles.text);
+                    console.log(`%c   Kashipur, Uttarakhand - 244713\n`, styles.text);
 
-                    console.log(`%c⚡ Available: ${this.contact.available}`, styles.success);
+                    console.log(`%c⚡ Available: Full Time • Freelance • Remote`, styles.success);
                 },
 
                 // सारे कमांड्स की लिस्ट
@@ -1661,15 +1697,15 @@
                     console.log('%c====================\n', styles.text);
 
                     const commands = [
-                        { cmd: 'ojha.show()', desc: 'पूरा पोर्टफोलियो दिखाएं' },
-                        { cmd: 'ojha.info()', desc: 'बेसिक जानकारी' },
-                        { cmd: 'ojha.skills()', desc: 'सिर्फ स्किल्स' },
-                        { cmd: 'ojha.projects()', desc: 'प्रोजेक्ट्स की लिस्ट' },
-                        { cmd: 'ojha.contact()', desc: 'कॉन्टैक्ट डिटेल्स' },
-                        { cmd: 'ojha.social()', desc: 'सोशल मीडिया लिंक्स' },
-                        { cmd: 'ojha.matrix()', desc: 'मैट्रिक्स इफेक्ट' },
-                        { cmd: 'ojha.clear()', desc: 'कंसोल साफ करें' },
-                        { cmd: 'ojha.help()', desc: 'यह हेल्प मेनू' }
+                        { cmd: 'ojha.show()', desc: 'Show complete portfolio' },
+                        { cmd: 'ojha.info()', desc: 'Basic information' },
+                        { cmd: 'ojha.skills()', desc: 'View all skills' },
+                        { cmd: 'ojha.projects()', desc: 'List of projects' },
+                        { cmd: 'ojha.contact()', desc: 'Contact details' },
+                        { cmd: 'ojha.social()', desc: 'Social media links' },
+                        { cmd: 'ojha.matrix()', desc: 'Matrix effect' },
+                        { cmd: 'ojha.clear()', desc: 'Clear console' },
+                        { cmd: 'ojha.help()', desc: 'Show this help menu' }
                     ];
 
                     commands.forEach(c => {
@@ -1677,7 +1713,7 @@
                         console.log(`%c  → ${c.desc}\n`, styles.text);
                     });
 
-                    console.log('%c💡 टिप: सारे कमांड्स के साथ ट्राई करें!', styles.warning);
+                    console.log('%c💡 Tip: Try all commands!', styles.warning);
                 },
 
                 // सोशल मीडिया
@@ -1733,14 +1769,14 @@
             console.log('%c🚀 Full Stack Developer | PHP | MySQL | APIs', styles.header);
             console.log('%c📅 2+ Years @ Zanthium Technosoft\n', styles.text);
 
-            console.log('%c⚡ कंसोल में टाइप करें:', styles.warning);
-            console.log('%c   ojha.help()  - सारे कमांड्स देखें', styles.success);
-            console.log('%c   ojha.show()  - पूरा पोर्टफोलियो देखें\n', styles.success);
+            console.log('%c⚡ Type in console:', styles.warning);
+            console.log('%c   ojha.help()  - See all commands', styles.success);
+            console.log('%c   ojha.show()  - View full portfolio\n', styles.success);
 
-            console.log('%c💡 PRO TIP: ojha.matrix() भी ट्राई करें!', styles.highlight);
-
+            console.log('%c💡 PRO TIP: Also try ojha.matrix()!', styles.highlight);
         })();
     </script>
 </body>
+
 
 </html>
